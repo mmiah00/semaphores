@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <errno.h>
 #include <sys/sem.h>
 #include <sys/shm.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <fcntl.h>
@@ -44,6 +44,13 @@ void v () { //viewing
   int fd = open ("file.txt", O_RDONLY);
   if (fd == -1) {
     printf ("didn't open");
+  }
+  else {
+    char * line;
+    line[0] = NULL;
+    read (fd, line, 10000);
+    printf ("Story so far: %s\n", line);
+    close (fd);   
   }
 
 }
