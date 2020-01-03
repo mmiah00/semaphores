@@ -23,7 +23,7 @@ int main () {
     printf ("Error: %s\n", strerror (errno));
   }
   else {
-    semop (sem, &buf, 1);
+    //semop (sem, &buf, 1);
     int shm = shmget (KEY2, 2056, 0);
     if (shm < 0) {
       printf ("Shared Memory Error: %s\n", strerror (errno));
