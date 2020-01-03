@@ -29,7 +29,8 @@ int main () {
     }
     else {
       int fd = open ("file.txt", O_WRONLY);
-      printf ("Last addition: %s\n", shmat (shm, 0,0));
+      char * last = shmat (shm, 0,0); 
+      printf ("Last addition: %s\n", last);
       char *next; ;
       fgets (next, 256, stdin);
       write (fd, next, strlen (next));
