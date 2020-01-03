@@ -31,10 +31,10 @@ void c () { //creating
     semctl (sem, 0, SETVAL, semvals.val);
     printf ("\tShared memory created!\n");
     int fd = open ("new.txt", O_CREAT, 0644);
-    printf ("\tFile created!\n");
     if (fd == -1) {
       printf ("didn't open\nError: %s\n", strerror (errno));
     }
+    printf ("\tFile created!\n");
     close (fd);
   }
 }
