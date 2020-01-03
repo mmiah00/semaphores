@@ -6,7 +6,9 @@
 #include <sys/types.h>
 #include <errno.h>
 
-#define KEY 24602
+#define KEY1 24601
+#define KEY2 24602
+
 
 union semun {
   int              val;
@@ -15,10 +17,12 @@ union semun {
   struct seminfo  *__buf;
 };
 
+int sem;
+union semun semvals;
+
 void c () { //creating
-  union semun semvals;
   printf ("Creating...\n");
-  int sem = semget(KEY, 1, IPC_CREAT | IPC_EXCL | 0644);
+  sem = semget(KEY1, 1, IPC_CREAT | IPC_EXCL | 0644);
   if (sem > -1) {
     printf ("\tSemaphore created!\n");
     semvals.val = 1;
@@ -43,7 +47,19 @@ void v () { //viewing
 }
 
 void r () { //removing
-  int sem = semget(KEY, 1, 0);
+  sem = semget(KEY, 1, 0);
+  if (sem < 0) {
+    printf ("Couldn't remove.");
+  }
+  else {
+    printf ("Trying to get in...\n");
+    semctl(shmget (KEY2, 100, 0), IPC_RMID, 0);
+    printf ("Shared memory removed.\n");
+    remove ("file.txt");
+    printf ("File removed.\n");
+    semctl(sem, IPC_RMID, 0);
+    printf ("Semaphore removed.\n");
+  }
 }
 
 int main(int argc, char * argv[]) {
