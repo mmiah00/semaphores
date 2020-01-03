@@ -33,7 +33,7 @@ void c () { //creating
     int fd = open ("file.txt", O_CREAT, 0644);
     printf ("\tFile created!\n");
     if (fd == -1) {
-      printf ("didn't open");
+      printf ("didn't open\nError: %s\n", strerror (errno));
     }
     close (fd);
   }
@@ -43,14 +43,14 @@ void v () { //viewing
   printf ("The story so far: \n");
   int fd = open ("file.txt", O_RDONLY);
   if (fd == -1) {
-    printf ("didn't open");
+    printf ("didn't open\nError: %s\n", strerror (errno));
   }
   else {
     char * line;
     line[0] = '\0';
     read (fd, line, 10000);
     printf ("Story so far: %s\n", line);
-    close (fd);   
+    close (fd);
   }
 
 }
@@ -58,7 +58,7 @@ void v () { //viewing
 void r () { //removing
   sem = semget(KEY1, 1, 0);
   if (sem < 0) {
-    printf ("Couldn't remove.");
+    printf ("couldn't remove\nError: %s\n", strerror (errno));
   }
   else {
     printf ("Trying to get in...\n");
