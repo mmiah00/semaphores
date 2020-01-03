@@ -15,19 +15,35 @@ union semun {
   struct seminfo  *__buf;
 };
 
-void c () {
+void c () { //creating
   union semun semvals;
   printf ("Creating...\n");
   int sem = semget(KEY, 1, IPC_CREAT | IPC_EXCL | 0644);
   if (sem > -1) {
+    printf ("\tSemaphore created!\n");
     semvals.val = 1;
     semctl (sem, 0, SETVAL, semvals.val);
+    printf ("\tShared memory created!\n");
     int fd = open ("file.txt", O_CREAT, 0644);
+    printf ("\tFile created!\n");
     if (fd == -1) {
       printf ("didn't open");
     }
     close (fd);
   }
+}
+
+void v () { //viewing
+  printf ("The story so far: \n");
+  int fd = open ("file.txt", O_RDONLY);
+  if (fd == -1) {
+    printf ("didn't open");
+  }
+
+}
+
+void r () { //removing
+  int sem = semget(KEY, 1, 0);
 }
 
 int main(int argc, char * argv[]) {
