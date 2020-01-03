@@ -4,3 +4,5 @@ all: control.c write.c
 
 clean:
 	rm -rf *.o
+	rm -rf "new.txt"
+
