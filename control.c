@@ -73,6 +73,7 @@ void r () { //removing
 
 int main(int argc, char * argv[]) {
   if (argc == 2) {
+    /*
     int semd;
     int a;
 
@@ -84,7 +85,7 @@ int main(int argc, char * argv[]) {
       union semun us;
       us.val = 1;
       a = semctl(semd, 0, SETVAL, us);
-    }
+    }*/
     char * flag = argv[1];
     if (strcmp (flag, "-c") == 0) {
       c (); //creating
