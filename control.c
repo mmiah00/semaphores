@@ -15,44 +15,58 @@ union semun {
   struct seminfo  *__buf;
 };
 
+void c () {
+  union semun semvals;
+  printf ("Creating...\n");
+  int sem = semget(KEY, 1, IPC_CREAT | IPC_EXCL | 0644);
+  if (sem > -1) {
+    semvals.val = 1;
+    semctl (sem, 0, SETVAL, semvals.val);
+    int fd = open ("file.txt", O_CREAT, 0644);
+    if (fd == -1) {
+      printf ("didn't open");
+    }
+    close (fd);
+  }
+}
 
 int main(int argc, char * argv[]) {
   if (argc == 2) {
     int semd;
-    int v, r;
-    char input[3];
+    int r;
 
     semd = semget(KEY, 1, IPC_CREAT | IPC_EXCL | 0644);
     if (semd == -1) {
       printf("error %d: %s\n", errno, strerror(errno));
-      semd = semget(KEY, 1, 0);
-      v = semctl(semd, 0, GETVAL, 0);
-      printf("semctl returned: %d\n", v);
     }
     else {
       union semun us;
       us.val = 1;
       r = semctl(semd, 0, SETVAL, us);
-      printf("semctl returned: %d\n", r);
     }
-    char * flag;
-    fgets (flag, 5, stdin);
+    char * flag = argv[1];
+    if (strcmp (flag, "-c") == 0) {
+      c (); //creating
+    }
+    else {
+      if (strcmp (flag, "-v") == 0) {
+        v (); //viewing
+      }
+      else {
+        r (); //removing
+      }
+    }
+    /*
     if (strcmp (flag, "-r")) {
       semctl (semd, IPC_RMID, 0);
-      /*
-      printf("Would you like to remove the semaphore?(y/n) ");
-      fgets(input, 3, stdin);
 
-      if (input[0] == 'y') {
-        semctl(semd, IPC_RMID, 0);
-        printf("segment deleted\n");
-      }*/
-    }
+      //print story
+      printf ("shared memory removed\nfile removed\nsemaphore removed");
+    }*/
 
-
-    return 0;
   }
   else {
     printf ("Please add a flag (-c, -v, -r) \n");
   }
+  return 0;
 }
