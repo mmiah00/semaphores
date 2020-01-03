@@ -29,7 +29,7 @@ int main () {
       printf ("Shared Memory Error: %s\n", strerror (errno));
     }
     else {
-      int fd = open ("file.txt", O_WRONLY);
+      int fd = open ("new.txt", O_WRONLY);
       char * last = shmat (shm, 0,0);
       printf ("Last addition: %s\n", last);
       char *next; ;
