@@ -14,7 +14,7 @@
 
 int main () {
   printf ("trying to get in\n");
-  int sem = semget(KEY2, 1, 0);
+  int sem = semget(KEY1, 1, 0);
   struct sembuf buf;
   if (sem < 0) {
     printf ("Error: %s\n", strerror (errno));
