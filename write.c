@@ -28,7 +28,7 @@ int main () {
       printf ("Shared Memory Error: %s\n", strerror (errno));
     }
     else {
-      int fd = open ("new.txt", O_WRONLY);
+      int fd = open ("new.txt", O_WRONLY | O_APPEND, 0644);
       char * last = shmat (shm, 0,0);
       printf ("Last addition: %s\n", last);
       printf ("Your addition: ");
