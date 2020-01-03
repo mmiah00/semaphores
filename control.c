@@ -47,7 +47,7 @@ void v () { //viewing
   }
   else {
     char * line;
-    line[0] = NULL;
+    line[0] = '\0';
     read (fd, line, 10000);
     printf ("Story so far: %s\n", line);
     close (fd);   
