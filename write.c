@@ -9,7 +9,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-
 #define KEY1 24601
 #define KEY2 24602
 
@@ -24,7 +23,7 @@ int main () {
   }
   else {
     semop (sem, &buf, 1);
-    int shm = shmget (KEY1, 2056, 0);
+    int shm = shmget (KEY1, 10000, 0);
     if (shm < 0) {
       printf ("Shared Memory Error: %s\n", strerror (errno));
     }
