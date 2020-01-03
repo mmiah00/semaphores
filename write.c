@@ -32,10 +32,11 @@ int main () {
       int fd = open ("new.txt", O_WRONLY);
       char * last = shmat (shm, 0,0);
       printf ("Last addition: %s\n", last);
+      printf ("Your addition: ");
       char *next; ;
       fgets (next, 256, stdin);
       write (fd, next, strlen (next));
-      printf ("Your addition: %s", next);
+      printf ("%s\n", next);
       close (fd);
       shmdt (next);
       buf.sem_op = 1;
