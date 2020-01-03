@@ -13,6 +13,8 @@ int main () {
   printf ("trying to get in\n");
   int sem = semget(KEY, 1, 0);
   struct sembuf buf;
+  buf.sem_num = 0;
+  buf.sem_op = -1; 
   if (sem < 0) {
     printf ("Error: %s\n", strerror (errno));
   }
@@ -29,7 +31,10 @@ int main () {
       fgets (next, 256, stdin);
       write (fd, next, strlen (next));
       printf ("Your addition: %s", next);
-      close (fd); 
+      close (fd);
+      shmdt (next);
+      buf.sem_op = 1;
+      semop (sem, &buf, 1);
     }
   }
   return 0;
