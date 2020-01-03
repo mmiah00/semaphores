@@ -46,8 +46,8 @@ void v () { //viewing
     printf ("didn't open\nError: %s\n", strerror (errno));
   }
   else {
-    char * f = malloc (2056, sizeof (char));
-    int last = read (fd, file, 1000);
+    char * f = malloc (2056);
+    int last = read (fd, f, 1000);
     if (last == -1) {
       printf ("Reading error: %s\n", strerror (errno));
     }
@@ -55,7 +55,7 @@ void v () { //viewing
       char * line = strchr (f, '\n');
       printf ("%s\n", f);
       free (f);
-      close (fd); 
+      close (fd);
     }
   }
 
