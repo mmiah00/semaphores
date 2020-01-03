@@ -15,20 +15,17 @@
 int main () {
   printf ("trying to get in\n");
   int sem = semget(KEY1, 1, 0);
-  struct sembuf buf;
-  buf.sem_num = 0;
-  buf.sem_op = -1;
   if (sem < 0) {
     printf ("Error: %s\n", strerror (errno));
   }
   else {
     semop (sem, &buf, 1);
-    int shm = shmget (KEY1, 10000, 0);
+    int shm = shmget (KEY1, sizeof (char *), 0);
     if (shm < 0) {
       printf ("Shared Memory Error: %s\n", strerror (errno));
     }
     else {
-      int fd = open ("new.txt", O_WRONLY | O_APPEND, 0644);
+      int fd = open ("new.txt", O_WRONLY | O_APPEND);
       char * last = shmat (shm, 0,0);
       printf ("Last addition: %s\n", last);
       printf ("Your addition: ");
