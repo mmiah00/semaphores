@@ -49,6 +49,9 @@ void v () { //viewing
     char * line;
     line[0] = '\0';
     read (fd, line, 10000);
+    if (strlen (line) > 0) {
+      *(srrchr (line, '\n') + 1) = '\0'; 
+    }
     printf ("Story so far: %s\n", line);
     close (fd);
   }
