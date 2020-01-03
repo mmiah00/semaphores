@@ -46,14 +46,17 @@ void v () { //viewing
     printf ("didn't open\nError: %s\n", strerror (errno));
   }
   else {
-    char * line;
-    line[0] = '\0';
-    read (fd, line, 10000);
-    if (strlen (line) > 0) {
-      *(strchr (line, '\n') + 1) = '\0'; 
+    char * f = malloc (2056, sizeof (char));
+    int last = read (fd, file, 1000);
+    if (last == -1) {
+      printf ("Reading error: %s\n", strerror (errno));
     }
-    printf ("Story so far: %s\n", line);
-    close (fd);
+    else {
+      char * line = strchr (f, '\n');
+      printf ("%s\n", f);
+      free (f);
+      close (fd); 
+    }
   }
 
 }
@@ -85,7 +88,9 @@ int main(int argc, char * argv[]) {
         v (); //viewing
       }
       else {
-        r (); //removing
+        if (strcmp (flag, "-r") == 0) {
+          r (); //removing
+        }
       }
     }
     /*
