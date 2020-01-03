@@ -24,7 +24,7 @@ union semun semvals;
 
 void c () { //creating
   printf ("Creating...\n");
-  sem = semget(KEY1, 1, IPC_CREAT | IPC_EXCL | 0644);
+  sem = semget(KEY1, 1, IPC_CREAT | IPC_EXCL | 0600);
   if (sem > -1) {
     printf ("\tSemaphore created!\n");
     semvals.val = 1;
