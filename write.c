@@ -6,21 +6,31 @@
 #include <sys/types.h>
 #include <errno.h>
 
-int main (int argc, char * argv []) {
+#define KEY1 24601
+#define KEY2 24602
+
+int main () {
   printf ("trying to get in\n");
-  int i = 1;
-  while (true) {
-    char * prevline;
-    if (i = 1) {
-      printf ("Last line: \n");
+  int sem = semget(KEY, 1, 0);
+  struct sembuf buf;
+  if (sem < 0) {
+    printf ("Error: %s\n", strerror (errno));
+  }
+  else {
+    semop (sem, &sb, 1);
+    int shm = shmget (KEY2, 100, 0);
+    if (shm < 0) {
+      printf ("Error: %s", strerror (errno));
     }
     else {
-      fgets (prevline, 100, argv[i - 1]);
-      printf ("Last line: %s\n", prevline); 
+      int fd = open ("file.txt", O_WRONLY);
+      printf ("Last addition: %s\n", shmat (shm, 0,0));
+      char *next; ;
+      fgets (next, 256, stdin);
+      write (fd, next, strlen (next));
+      printf ("Your addition: %s", next);
+      close (fd); 
     }
-    char * new;
-    fgets (new, 100, stdin);
-    printf ("Your addition: %s\n", new);
   }
   return 0;
 }
