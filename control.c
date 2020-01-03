@@ -30,7 +30,7 @@ void c () { //creating
     semvals.val = 1;
     semctl (sem, 0, SETVAL, semvals.val);
     printf ("\tShared memory created!\n");
-    int fd = open ("file.txt", O_CREAT, 0644);
+    int fd = open ("new.txt", O_CREAT, 0644);
     printf ("\tFile created!\n");
     if (fd == -1) {
       printf ("didn't open\nError: %s\n", strerror (errno));
@@ -41,7 +41,7 @@ void c () { //creating
 
 void v () { //viewing
   printf ("The story so far: \n");
-  int fd = open ("file.txt", O_RDONLY);
+  int fd = open ("new.txt", O_RDONLY);
   if (fd == -1) {
     printf ("didn't open\nError: %s\n", strerror (errno));
   }
@@ -64,7 +64,7 @@ void r () { //removing
     printf ("Trying to get in...\n");
     semctl(shmget (KEY2, 100, 0), IPC_RMID, 0);
     printf ("Shared memory removed.\n");
-    remove ("file.txt");
+    remove ("new.txt");
     printf ("File removed.\n");
     semctl(sem, IPC_RMID, 0);
     printf ("Semaphore removed.\n");
