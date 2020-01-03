@@ -24,7 +24,7 @@ int main () {
   }
   else {
     semop (sem, &buf, 1);
-    int shm = shmget (KEY2, 100, 0);
+    int shm = shmget (KEY2, 2056, 0);
     if (shm < 0) {
       printf ("Shared Memory Error: %s\n", strerror (errno));
     }
