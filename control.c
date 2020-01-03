@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/ipc.h>
-#include <sys/sem.h>
-#include <sys/types.h>
 #include <errno.h>
+#include <sys/sem.h>
+#include <sys/shm.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #define KEY1 24601
 #define KEY2 24602
-
 
 union semun {
   int              val;
@@ -47,7 +49,7 @@ void v () { //viewing
 }
 
 void r () { //removing
-  sem = semget(KEY, 1, 0);
+  sem = semget(KEY1, 1, 0);
   if (sem < 0) {
     printf ("Couldn't remove.");
   }
@@ -65,16 +67,16 @@ void r () { //removing
 int main(int argc, char * argv[]) {
   if (argc == 2) {
     int semd;
-    int r;
+    int a;
 
-    semd = semget(KEY, 1, IPC_CREAT | IPC_EXCL | 0644);
+    semd = semget(KEY1, 1, IPC_CREAT | IPC_EXCL | 0644);
     if (semd == -1) {
       printf("error %d: %s\n", errno, strerror(errno));
     }
     else {
       union semun us;
       us.val = 1;
-      r = semctl(semd, 0, SETVAL, us);
+      a = semctl(semd, 0, SETVAL, us);
     }
     char * flag = argv[1];
     if (strcmp (flag, "-c") == 0) {
