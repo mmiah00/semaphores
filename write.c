@@ -15,8 +15,8 @@
 int main () {
   printf ("trying to get in\n");
   struct sembuf buf;
-  bug.sem_num = 0;
-  bug.sem_op = -1;
+  buf.sem_num = 0;
+  buf.sem_op = -1;
   int sem = semget(KEY1, 1, 0644);
   if (sem < 0) {
     printf ("Error: %s\n", strerror (errno));
