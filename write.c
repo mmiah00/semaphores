@@ -14,31 +14,35 @@
 
 int main () {
   printf ("trying to get in\n");
-  int sem = semget(KEY1, 1, 0);
   struct sembuf buf;
+  bug.sem_num = 0;
+  bug.sem_op = -1;
+  int sem = semget(KEY1, 1, 0644);
   if (sem < 0) {
     printf ("Error: %s\n", strerror (errno));
+    return 0;
+  }
+  semop (sem, &buf, 1);
+  int shm = shmget (KEY2, sizeof (int), IPC_CREAT | IPC_EXCL | 0644);
+  if (shm < 0) {
+    printf ("Shared Memory Error: %s\n", strerror (errno));
+    return 0;
   }
   else {
+    int fd = open ("new.txt", O_WRONLY | O_APPEND);
+    char * last = shmat (shm, 0,0);
+    char *next;
+    printf ("Last addition: %s\n", last);
+    printf ("Your addition: ");
+    fgets (next, 1000, stdin);
+    write (fd, next, strlen (next));
+    printf ("%s\n", next);
+    strcpy (last, next);
+    shmdt (last);
+    close (fd);
+
+    buf.sem_op = 1;
     semop (sem, &buf, 1);
-    int shm = shmget (KEY1, sizeof (char *), 0);
-    if (shm < 0) {
-      printf ("Shared Memory Error: %s\n", strerror (errno));
-    }
-    else {
-      int fd = open ("new.txt", O_WRONLY | O_APPEND);
-      char * last = shmat (shm, 0,0);
-      printf ("Last addition: %s\n", last);
-      printf ("Your addition: ");
-      char *next; ;
-      fgets (next, 256, stdin);
-      write (fd, next, strlen (next));
-      printf ("%s\n", next);
-      close (fd);
-      shmdt (next);
-      buf.sem_op = 1;
-      semop (sem, &buf, 1);
-    }
   }
   return 0;
 }
